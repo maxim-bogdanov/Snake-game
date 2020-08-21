@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+<body>
+  <div class="wrapper">
+
+    <div class="screen">
+      <div class="menu">
+        <h1 class="title menu__title">Snake</h1>
+        <button class="button" id="startBtn">New game</button>
+      </div>
+
+      <div class="play">
+        <div class="play-info"> 
+          <h1 class="title play-info__score">Score: <span class="score"></span></h2>
+          <button class="pause-btn" id="pauseBtn">Pause</button>
+        </div>
+        <div class="game">
+          <canvas id="canvas" width=500 height=600></canvas>
+        </div>
+      </div>
+
+      <div class="finish">
+        <h1 class="title finish__title">The End</h1>
+        <h2 class="title finish__score">Score: <span class="score"></span></h2>
+        <button class="button" id="playAgainBtn">Play again</button>
+        <button class="button" id="startBtn">New game</button>
+      </div>
+    </div>
+
+    <div class="pause">
+       <h1 class="title pause__title">Pause</h1>
+       <button class="button" id="resumeBtn">Resume the Game</button> 
+       <button class="button" id="stopBtn">Stop playing</button>
+    </div>
+  </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.0/gsap.min.js" integrity="sha512-JO6JyFPJupQKZf7icgZkHwuq/rAQxH7COqvEd4WdK52AtHPedwHog05T69pIelI69jVN/zZbW6TuHfH2mS8j/Q==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.0/CSSRulePlugin.min.js" integrity="sha512-HdiyPXmEtBWk82ejcu4gQSJ+Rz+bxGJvRxkZBFnuUElWjEbonHqYl/0657JBoLOPXVYds7FuWX5+hWpOXqSYeA==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.0/EaselPlugin.min.js" integrity="sha512-zuJZ04TDJ61JWWqye7v7K4lhrS6XX/eNBHEipXaTf/6Kv81skOtv8dWsWMYmj2D2bOBJNdofas7kFaufaz95SQ==" crossorigin="anonymous"></script>
+
+<script src="../js/components/input-controller/InputController.js"></script>
+<script src="../js/components/entity/entity.js"></script>
+<script src="../js/components/entity/bonus.js"></script>
+<script src="../js/components/inputDevices/InputDevice.js"></script>
+<script src="../js/components/inputDevices/GesturesInputDevice.js"></script>
+<script src="../js/components/inputDevices/KeyboardInputDevice.js"></script>
+<script src="../js/components/input-controller/InputController-test.js"></script>
+</html>
