@@ -22,7 +22,7 @@ addEventListener('DOMContentLoaded',()=>{
             '11111111111111111111|'+
             '10000000000100000001|'+
             '10000000000100000001|'+
-            '10000000000000000001|'+
+            '10*00000000000000001|'+
             '10000000000000000001|'+
             '10000000000000000001|'+
             '10000000000000000001|'+
@@ -31,7 +31,7 @@ addEventListener('DOMContentLoaded',()=>{
             '100000-0---010000001|'+
             '100000=0000000000001|'+
             '10000000000000001111|'+
-            '10000000000000000001|'+
+            '10000000000010000001|'+
             '10010000010000000001|'+
             '10000000001000000001|'+
             '10000000000000001111|'+
@@ -65,50 +65,5 @@ addEventListener('DOMContentLoaded',()=>{
     eventBus.addEventListener('game.finish', ()=>{
         console.log('game finished');
     });
-    
-    // CONTROLLER INITIALIZATION
-    // const inputController = new InputController();
-    // inputController.addInputDevice( [new KeyboardInputDevice(), new GesturesInputDevice()] );
-    // inputController.bindActions(actionsToBind);
-    // inputController.attach(target);
-    
-    
-    /// !!! >>>
-    
-    // let squareSize = 50;
-    // const bonus = new Bonus();
-    // bonus.init(squareSize);
-    // let outR = squareSize / 2;
-    // let innR = outR / 2;
-    // bonus.draw({x:100, y:200});
-    
-    /// !!! <<<
-    
-    /*
-    
-    
-    
-    // eventBus.addEventListener( InputController.ACTION_ACTIVATED, function(e){
-    //     console.log('action activated:', e.detail );
-    //     moveHero(hero, e.detail.actionName);
-    //     // проверяем какая активность сработала и применяем к герою
-    // });
-    
-    // eventBus.addEventListener( InputController.ACTION_DEACTIVATED, function(e){
-    //     console.log('action deactivated:', e.detail );
-    //     // проверяем какая активность сработала и применяем к герою
-    // });
-    
-    
-    setInterval(function(){
-        const bindActions = inputController.getBindActions;
-        Object.keys(bindActions).forEach(actionName => {
-            if(inputController.isActionActive(actionName)){
-                moveHero(hero, actionName);
-            }
-        });
-    }, 33 );
-    
-    */
-    
+
 });

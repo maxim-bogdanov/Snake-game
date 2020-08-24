@@ -6,6 +6,7 @@ class InputController {
     #eventBus = window;
     #bindedActions = {};
     #inputDevices = [];
+    // isActive = false;
 
     static ACTION_ACTIVATED = "input-controller:action-activated";
     static ACTION_DEACTIVATED = "input-controller:action-deactivated";

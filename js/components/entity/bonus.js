@@ -44,9 +44,9 @@ class Bonus extends Entity {
         context.arc(cx, Math.round(size*0.52) + coord.y, Math.round(size*0.26), Math.PI, 2*Math.PI, true);
         context.closePath();
         context.fill();
-      }
+    }
 
     delete() {
-        this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
+        this.#ctx.clearRect(coord.x, coord.y, this.#canvas.width, this.#canvas.height);
     }
 }

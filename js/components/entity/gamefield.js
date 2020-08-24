@@ -13,6 +13,10 @@ class GameField extends Entity{
     #firstDirection = '';
     #width;
     #height;
+    coordBonus = {
+        x: 0,
+        y: 0
+    };
 
 
     reset(levelData) {
@@ -34,13 +38,19 @@ class GameField extends Entity{
                         break;
 
                     case '=': // snake head
+                    // field[y][x] = "=";
                     snakeData.unshift({x,y});
                         break;
 
                     case '-': // snake body
+                    // field[y][x] = "-";
                     snakeData.push({x,y});
                         break;
 
+                    case '*': //bonus
+                        // field[y][x] = "*";
+                        this.coordBonus.x = x;
+                        this.coordBonus.y = y;
                 }
                 if( x>this.fieldWidth) this.fieldWidth = x;
             });
@@ -79,21 +89,52 @@ class GameField extends Entity{
 
     }
 
-    // addSnakeToField(snake) {
-    //     for (let segment of snake) {
-    //         this.field[segment.x][segment.y] = "snake";
-    //     }
-    // }
 
     // врезалась ли змея в поле
     checkSnakeStep(snake) {
-        // const head = snake[length.snake - 1];
-        // return (this.#field[head.x][head.y]);
+        const head = snake.snakeParts[0];
+        return (this.field[head.y][head.x] === 1);
     }
 
-    checkBonus(snake) {
+    // подобрали ли бонус
+    isBonusGet(snake) {
+        let isBonusGet = snake.snakeParts[0].x === this.coordBonus.x 
+        && snake.snakeParts[0].y === this.coordBonus.y;
 
+        return isBonusGet;
     }
 
+    changeCoordBonus(snake) {
+        let isBonusIntoSnake = true, isBonusIntoObstacle = true;
 
+        let coordBonusRandom;
+        while (isBonusIntoSnake || isBonusIntoObstacle) {
+            coordBonusRandom = { // новые координаты бонуса
+                x: this.randomInteger(0, this.fieldWidth),
+                y: this.randomInteger(0, this.fieldHeight),
+                // x: 6,
+                // y: 3
+            }
+
+            isBonusIntoSnake = snake.snakeParts.find( (elem) => 
+                elem.x == coordBonusRandom.x && elem.y == coordBonusRandom.y
+            );
+
+            isBonusIntoObstacle = this.field[coordBonusRandom.y][coordBonusRandom.x];
+
+        }
+
+        this.coordBonus = {
+            x: coordBonusRandom.x,
+            y: coordBonusRandom.y
+        }
+        // return coordBonus;
+    }
+
+    randomInteger(min, max) {
+        // получить случайное число от (min-0.5) до (max+0.5)
+        let rand = min - 0.5 + Math.random() * (max - min + 1);
+        return Math.round(rand);
+      }
+      
 }

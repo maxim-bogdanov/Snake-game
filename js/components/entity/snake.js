@@ -102,6 +102,8 @@ class Snake extends Entity{
             return true;
         }
 
+        
+
         return false; // если все ок
 
     }

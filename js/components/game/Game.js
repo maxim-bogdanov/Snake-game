@@ -100,26 +100,12 @@ class Game {
 
         this.reset(gameData.levelData);
 
-        this.gameStepInterval = setInterval(this.gameStep, 1000);
-
+        this.gameStepInterval = setInterval(this.gameStep, 300);
+        this.checkActiveInterval = setInterval(this.getActiveDirection.bind(this), 33);
     }
 
-    gameStep(){
-        
-        // Обработать инпут
-        let lastDirection;   
-        
-        // eventBus.addEventListener( InputController.ACTION_ACTIVATED, function(e){
-        //     console.log('action activated:', e.detail );
-        //     moveHero(hero, e.detail.actionName);
-        //     // проверяем какая активность сработала и применяем к герою
-        // });
-
-        // eventBus.addEventListener( InputController.ACTION_DEACTIVATED, function(e){
-        //     console.log('action deactivated:', e.detail );
-        //     // проверяем какая активность сработала и применяем к герою
-        // });
-
+    getActiveDirection() {
+        let lastDirection;
         const bindActions = ["left", "right", "up", "down"];
         bindActions.forEach(actionName => {
             if(this.inputController.isActionActive(actionName)) {
@@ -128,21 +114,37 @@ class Game {
                 return;
             }
         });
+        return (this.newDirection || lastDirection);
+    }
 
+    gameStep(){
+        
+        // Обработать инпут
 
-        if( this.snake.move(this.newDirection || lastDirection) ){
+        let isBonusGet = false;
+
+        
+        if( this.snake.move(this.getActiveDirection()) ){
             // если врезался сам в себя - конец игры
+            this.finish();
+            this.renderer.clear();
+            return;
+
         }
 
         // this.gameField.addSnakeToField( this.snake );
         
-        // if( this.gameField.checkSnakeStep( this.snake ) ){
-        //     // если врезался - конец игры
-        // }
+        if( this.gameField.checkSnakeStep( this.snake ) ){
+            // если врезался - конец игры
+            this.finish();
+            this.renderer.clear();
+            return;
+        }
 
-        // if( this.gameField.checkBonus( this.snake ) ) {
-        //     this.snake.doBigger();
-        // }
+        if( this.gameField.isBonusGet( this.snake ) ) {
+            this.snake.doBigger();
+            this.gameField.changeCoordBonus( this.snake );
+        }
         
 
         this.renderer.render();
