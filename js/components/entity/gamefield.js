@@ -17,6 +17,8 @@ class GameField extends Entity{
         x: 0,
         y: 0
     };
+    totalScore = 0;
+    #eventBus = window;
 
 
     reset(levelData) {
@@ -25,6 +27,7 @@ class GameField extends Entity{
         const snakeData = [];
         this.fieldHeight = 0;
         this.fieldWidth = 0;
+        this.totalScore = 0;
 
         levelData.field.split('|').forEach((row,y)=>{
             if(!row) return;
@@ -101,9 +104,21 @@ class GameField extends Entity{
         let isBonusGet = snake.snakeParts[0].x === this.coordBonus.x 
         && snake.snakeParts[0].y === this.coordBonus.y;
 
+        if (isBonusGet) {
+
+            this.totalScore++;
+
+            this.#eventBus.dispatchEvent(new CustomEvent('enlarge', {
+                detail: {
+                    score: this.totalScore
+                }
+            }));
+        }
+
         return isBonusGet;
     }
 
+    // создание нового бонуса
     changeCoordBonus(snake) {
         let isBonusIntoSnake = true, isBonusIntoObstacle = true;
 

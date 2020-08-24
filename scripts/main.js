@@ -46,7 +46,7 @@ addEventListener('DOMContentLoaded',()=>{
     const gameSettings = {
         controls: {
             keyboard: [30, 31, 32, 33],
-            mouse: false
+            // mouse: false
         },
         cellSize: 25
     };
@@ -55,6 +55,21 @@ addEventListener('DOMContentLoaded',()=>{
     let eventBus = window;    
     
     const game = new Game( gameSettings );
+
+    const $pause = document.getElementById('pauseBtn');
+    $pause.addEventListener('click', () => {
+        game.pause();
+    });
+
+    const $resume = document.getElementById('resumeBtn');
+    $resume.addEventListener('click', () => {
+        game.resume();
+    });
+
+    eventBus.addEventListener( 'enlarge', function(e){
+        document.getElementsByClassName('score')[0].innerHTML = e.detail.score;
+    });
+
 
     // buttonStart.addEventListener('click',()=>{
         game.start({

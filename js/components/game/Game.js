@@ -68,6 +68,7 @@ let actionsToBind;
 class Game {
     #gameSettings;
     newDirection = "right";
+    isPaused = false;
     constructor( gameSettings ){
 
         gameSettings = this.#gameSettings = Object.assign( {}, gameSettings );
@@ -100,7 +101,7 @@ class Game {
 
         this.reset(gameData.levelData);
 
-        this.gameStepInterval = setInterval(this.gameStep, 300);
+        this.gameStepInterval = setInterval(this.gameStep, 100);
         this.checkActiveInterval = setInterval(this.getActiveDirection.bind(this), 33);
     }
 
@@ -120,9 +121,7 @@ class Game {
     gameStep(){
         
         // Обработать инпут
-
-        let isBonusGet = false;
-
+        if (this.isPaused) return;
         
         if( this.snake.move(this.getActiveDirection()) ){
             // если врезался сам в себя - конец игры
@@ -131,8 +130,6 @@ class Game {
             return;
 
         }
-
-        // this.gameField.addSnakeToField( this.snake );
         
         if( this.gameField.checkSnakeStep( this.snake ) ){
             // если врезался - конец игры
@@ -151,8 +148,15 @@ class Game {
 
     }
 
+    pause() {
+        this.isPaused = true;
+        // return this.isPaused;
+    }
 
-
+    resume() {
+        this.isPaused = false;
+        // return this.isPaused;
+    }
 
     finish(){
 
