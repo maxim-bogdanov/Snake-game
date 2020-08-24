@@ -70,7 +70,7 @@ class KeyboardInputDevice extends InputDevice{
             keyObject.isPressed = true;
             this.inputController.activateAction(keyObject.action);
         }
-        // console.log(`Нажата клавиша ${event.keyCode}`);
+        console.log(`Нажата клавиша ${event.keyCode}`);
     }
 
     _onKeyUp(event) {
@@ -80,6 +80,7 @@ class KeyboardInputDevice extends InputDevice{
             keyObject.isPressed = false;
             this.inputController.deactivateAction(keyObject.action);
         }
+        console.log(`Отжата клавиша ${event.keyCode}`);
     }     
     
 }

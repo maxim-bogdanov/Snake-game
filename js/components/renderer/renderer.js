@@ -8,15 +8,13 @@ class Renderer {
     #width;
     #height;
 
-    constructor( gameField, snake ){
+    constructor( gameField, snake, cellSize ){
         this.#gameField = gameField;
         this.#snake = snake;
+        this.#cellSize = cellSize;
     }
 
     reset() {
-        this.#cellSize = 30;
-        
-
         this.#canvas = document.getElementById("canvas");
         this.#ctx = canvas.getContext("2d");
     }

@@ -45,10 +45,10 @@ class GameField extends Entity{
                 if( x>this.fieldWidth) this.fieldWidth = x;
             });
             this.fieldHeight = y;
-       });
+        });
 
-    //    console.log( 'parsedField', this.fieldWidth, this.fieldHeight, field, snakeData );
-        console.log('snakeData:', snakeData);
+        // console.log( 'parsedField', this.fieldWidth, this.fieldHeight, field, snakeData );
+
         
         const snakeDataSorted = [];
         const snakeDataLength = snakeData.length;
@@ -72,11 +72,11 @@ class GameField extends Entity{
 
             snakeData[indexDeletedElem] = {};
             snakeDataSorted.push(foundPiece);
-
         }
        // TODO: сортировать тело змея
-
+       console.log('snakeDataSorted:', snakeDataSorted);
        return snakeDataSorted;
+
     }
 
     // addSnakeToField(snake) {

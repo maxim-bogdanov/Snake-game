@@ -27,7 +27,7 @@ addEventListener('DOMContentLoaded',()=>{
             '10000000000000000001|'+
             '10000000000000000001|'+
             '10000000000000001111|'+
-            '100000---1-000000001|'+
+            '100000---1---0000001|'+
             '100000-0---010000001|'+
             '100000=0000000000001|'+
             '10000000000000001111|'+
@@ -45,10 +45,10 @@ addEventListener('DOMContentLoaded',()=>{
 
     const gameSettings = {
         controls: {
-            keyboard: [30,31,32,33],
+            keyboard: [30, 31, 32, 33],
             mouse: false
         },
-        cellSize: 50
+        cellSize: 25
     };
 
     // let target = window;

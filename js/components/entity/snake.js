@@ -20,7 +20,7 @@ class Snake extends Entity{
 
 
     reset(snakeData){
-        console.log('Snake.reset:', snakeData );
+        // console.log('Snake.reset:', snakeData );
         this.snakeParts.length = 0;
         snakeData.forEach((snakePiece)=>{
             this.snakeParts.push({
@@ -28,6 +28,7 @@ class Snake extends Entity{
                 y: snakePiece.y
             });
         });
+        // console.log('snakeParts',this.snakeParts);
     }
 
 /*
@@ -96,7 +97,10 @@ class Snake extends Entity{
         this.snakeParts.unshift(tail); // добавить перед головой в новой позиции
 
         // врезался в себя
-        if (this.snakeParts.find( (segment) => (this.snakeParts[0].x == segment.x && this.snakeParts[0].y == segment.y) )) return true;
+        if (this.snakeParts.find( (segment, index) => (index !== 0 && this.snakeParts[0].x == segment.x && this.snakeParts[0].y == segment.y) )) {
+            console.log('врезался!');
+            return true;
+        }
 
         return false; // если все ок
 

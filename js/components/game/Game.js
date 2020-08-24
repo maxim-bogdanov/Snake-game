@@ -63,18 +63,20 @@ const defaultActionsToBind = {
     }
 
 };
+let actionsToBind;
 
-class Game{
+class Game {
     #gameSettings;
+    newDirection = "right";
     constructor( gameSettings ){
 
         gameSettings = this.#gameSettings = Object.assign( {}, gameSettings );
         this.gameStep = this.gameStep.bind(this);
-        //
-        
+        const cellSize = gameSettings.cellSize || 30;
+
         const gameField = this.gameField = new GameField();
         const snake= this.snake = new Snake();
-        this.renderer = new Renderer( gameField, snake );
+        this.renderer = new Renderer( gameField, snake, cellSize );
 
         this.initControls( gameSettings.controls );
 
@@ -88,20 +90,9 @@ class Game{
 
         this.snake.reset(
             snakeData
-            // this.#gameSettings.headCoord,
-            // this.#gameSettings.snakeLength,
-            // this.#gameSettings.direction
-            // длина,
-            // направление,
         );
 
         this.renderer.reset(
-            // this.#gameSettings.cellSize || 30,
-            // this.gameField,
-            // this.snake
-            // размер ячейки
-            // игровое поле
-            // змея
         )
     }
 
@@ -116,28 +107,53 @@ class Game{
     gameStep(){
         
         // Обработать инпут
+        let lastDirection;   
+        
+        // eventBus.addEventListener( InputController.ACTION_ACTIVATED, function(e){
+        //     console.log('action activated:', e.detail );
+        //     moveHero(hero, e.detail.actionName);
+        //     // проверяем какая активность сработала и применяем к герою
+        // });
 
-/*
-        if( this.snake.move("right") ){
+        // eventBus.addEventListener( InputController.ACTION_DEACTIVATED, function(e){
+        //     console.log('action deactivated:', e.detail );
+        //     // проверяем какая активность сработала и применяем к герою
+        // });
+
+        const bindActions = ["left", "right", "up", "down"];
+        bindActions.forEach(actionName => {
+            if(this.inputController.isActionActive(actionName)) {
+                lastDirection = this.newDirection;
+                this.newDirection = actionName;
+                return;
+            }
+        });
+
+
+        if( this.snake.move(this.newDirection || lastDirection) ){
             // если врезался сам в себя - конец игры
         }
 
         // this.gameField.addSnakeToField( this.snake );
         
-        if( this.gameField.checkSnakeStep( this.snake ) ){
-            // если врезался - конец игры
-        }
+        // if( this.gameField.checkSnakeStep( this.snake ) ){
+        //     // если врезался - конец игры
+        // }
 
-        if( this.gameField.checkBonus( this.snake ) ) {
-            this.snake.doBigger();
-        }
-        */
+        // if( this.gameField.checkBonus( this.snake ) ) {
+        //     this.snake.doBigger();
+        // }
+        
 
         this.renderer.render();
 
     }
 
+
+
+
     finish(){
+
         clearInterval(this.gameStepInterval);
     }
 
@@ -145,14 +161,18 @@ class Game{
     initControls( controlsSettings ){
         
         // Input Controller
-        const actionsToBind = Object.assign( {}, defaultActionsToBind );
+        let actionsToBind = Object.assign( {}, defaultActionsToBind );
         if( controlsSettings.mouse === false ){
             actionsToBind.moveLeft.enabled = false;
             actionsToBind.moveUp.enabled = false;
             actionsToBind.moveRight.enabled = false;
             actionsToBind.moveDown.enabled = false;
         }
-        this.inputController = new InputController( actionsToBind, window );
+        this.inputController = new InputController();
+        let target = window;
+        this.inputController.addInputDevice( [new KeyboardInputDevice(), new GesturesInputDevice()] );
+        this.inputController.bindActions(actionsToBind);
+        this.inputController.attach(target);
 
         //
 
