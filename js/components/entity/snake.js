@@ -31,50 +31,6 @@ class Snake extends Entity{
         // console.log('snakeParts',this.snakeParts);
     }
 
-/*
-    reset(head, length, direction) { // передаем координату головы змейки, длину и направление
-        
-        this.snakeParts.length = 0;
-
-        const _dir = this.#currentDirection = this.directions[direction];
-        
-        for(let i=0; i<length; i++){
-            this.snakeParts.push(
-                {
-                    x: head.x - i * _dir.x,
-                    y: head.y - i * _dir.y
-                }
-            ); 
-        }
-
-        console.log(this.snakeParts);
-
-        // this.#head = head;
-        // this.#length = length;
-        // this.#direction = direction;
-
-        // this.#directionX = directions[this.#direction].x;
-        // this.#directionY = directions[this.#direction].y;
-
-        // // чтобы в массиве последним элементом была голова
-        // this.#tail = {
-        //     x: head.x - length * squareSize * (-this.#directionX),
-        //     y: head.y - length * squareSize * (-this.#directionY)
-        // }
-
-        // this.snakeParts.push(tail);
-
-        // for (let i = 1; i < this.#length; i++) {
-        //     this.snakeParts.push(
-        //         {
-        //             x: this.#tail.x + squareSize * i * this.#directionX,
-        //             y: this.#tail.y + squareSize * i * this.#directionY
-        //         }
-        //     );
-        // }
-    }
-    */
-
 
     lastTailPosition = {x:0,y:0};
     
@@ -102,7 +58,7 @@ class Snake extends Entity{
             return true;
         }
 
-        
+
 
         return false; // если все ок
 

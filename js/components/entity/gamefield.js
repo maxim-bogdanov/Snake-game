@@ -29,6 +29,7 @@ class GameField extends Entity{
         this.fieldWidth = 0;
         this.totalScore = 0;
 
+
         levelData.field.split('|').forEach((row,y)=>{
             if(!row) return;
             row.split('').forEach((cell,x)=>{
@@ -41,17 +42,14 @@ class GameField extends Entity{
                         break;
 
                     case '=': // snake head
-                    // field[y][x] = "=";
                     snakeData.unshift({x,y});
                         break;
 
                     case '-': // snake body
-                    // field[y][x] = "-";
                     snakeData.push({x,y});
                         break;
 
                     case '*': //bonus
-                        // field[y][x] = "*";
                         this.coordBonus.x = x;
                         this.coordBonus.y = y;
                 }
@@ -59,6 +57,14 @@ class GameField extends Entity{
             });
             this.fieldHeight = y;
         });
+
+        this.totalScore = snakeData.length;
+        this.#eventBus.dispatchEvent(new CustomEvent('interface.changeScore', {
+            detail: {
+                
+                score: this.totalScore
+            }
+        }));
 
         // console.log( 'parsedField', this.fieldWidth, this.fieldHeight, field, snakeData );
 
@@ -87,7 +93,7 @@ class GameField extends Entity{
             snakeDataSorted.push(foundPiece);
         }
        // TODO: сортировать тело змея
-       console.log('snakeDataSorted:', snakeDataSorted);
+    //    console.log('snakeDataSorted:', snakeDataSorted);
        return snakeDataSorted;
 
     }
@@ -96,19 +102,21 @@ class GameField extends Entity{
     // врезалась ли змея в поле
     checkSnakeStep(snake) {
         const head = snake.snakeParts[0];
+
         return (this.field[head.y][head.x] === 1);
     }
 
     // подобрали ли бонус
     isBonusGet(snake) {
-        let isBonusGet = snake.snakeParts[0].x === this.coordBonus.x 
-        && snake.snakeParts[0].y === this.coordBonus.y;
+        let isBonusGet = snake.snakeParts[0].x === this.coordBonus.x
+            && snake.snakeParts[0].y === this.coordBonus.y
+        ;
 
         if (isBonusGet) {
 
             this.totalScore++;
 
-            this.#eventBus.dispatchEvent(new CustomEvent('enlarge', {
+            this.#eventBus.dispatchEvent(new CustomEvent('interface.changeScore', {
                 detail: {
                     score: this.totalScore
                 }

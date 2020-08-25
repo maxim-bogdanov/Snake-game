@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../style/style.css">
 </head>
 <body>
+  <div class="wrapper-pause"></div>
   <div class="wrapper">
 
     <div class="screen">
@@ -18,10 +19,16 @@
       <div class="play">
         <div class="play-info"> 
           <h1 class="title play-info__score">Score: <span class="score">0</span></h2>
-          <button class="pause-btn" id="pauseBtn">Pause</button>
+          <button class="button" id="pauseBtn">Pause</button>
         </div>
         <div class="game">
           <canvas id="canvas" width=500 height=600></canvas>
+          
+          <div class="pause">
+            <h1 class="title pause__title">Pause</h1>
+            <button class="button" id="resumeBtn">Resume the Game</button> 
+            <button class="button" id="stopBtn">Stop playing</button>
+          </div>
         </div>
       </div>
 
@@ -29,15 +36,10 @@
         <h1 class="title finish__title">The End</h1>
         <h2 class="title finish__score">Score: <span class="score"></span></h2>
         <button class="button" id="playAgainBtn">Play again</button>
-        <button class="button" id="startBtn">New game</button>
+        <button class="button" id="newGameBtn">New game</button>
       </div>
     </div>
 
-    <div class="pause">
-       <h1 class="title pause__title">Pause</h1>
-       <button class="button" id="resumeBtn">Resume the Game</button> 
-       <button class="button" id="stopBtn">Stop playing</button>
-    </div>
   </div>
 </body>
 

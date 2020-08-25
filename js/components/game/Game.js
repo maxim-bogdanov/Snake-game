@@ -5,6 +5,9 @@ const defaultActionsToBind = {
         inputDevicesData:{
             "keyboard":{
                 keys: [37, 65]
+            },
+            "gestures":{
+                "gesture": "swipeLeft"
             }
         }        
     },
@@ -12,6 +15,9 @@ const defaultActionsToBind = {
         inputDevicesData:{
             "keyboard":{
                 keys: [38, 87],
+            },
+            "gestures":{
+                "gesture": "swipeUp"
             }
         }
     },
@@ -19,6 +25,9 @@ const defaultActionsToBind = {
         inputDevicesData:{
             "keyboard":{
                 keys: [39, 68],
+            },
+            "gestures":{
+                "gesture": "swipeRight"
             }
         }    
     },
@@ -26,40 +35,12 @@ const defaultActionsToBind = {
         inputDevicesData:{
             "keyboard":{
                 keys: [40, 83]
-            }
-        }    
-        // enabled: false
-    },
-
-
-    moveLeft: {
-        enabled: true,
-        inputDevicesData:{
-            "gestures":{
-                "gesture": "swipeLeft"
-            }
-        }    
-    },
-    moveUp: {
-        inputDevicesData:{
-            "gestures":{
-                "gesture": "swipeUp"
-            }
-        }    
-    },
-    moveRight: {
-        inputDevicesData:{
-            "gestures":{
-                "gesture": "swipeRight"
-            }
-        }    
-    },
-    moveDown: {
-        inputDevicesData:{
+            },
             "gestures":{
                 "gesture": "swipeDown"
             }
-        }
+        }    
+        // enabled: false
     }
 
 };
@@ -67,8 +48,11 @@ let actionsToBind;
 
 class Game {
     #gameSettings;
-    newDirection = "right";
+    newDirection;
+    curerntDirection = "right";
     isPaused = false;
+    eventBus = window;
+    inputActive = false;
     constructor( gameSettings ){
 
         gameSettings = this.#gameSettings = Object.assign( {}, gameSettings );
@@ -98,43 +82,34 @@ class Game {
     }
 
     start(gameData){
+        this.curerntDirection = "right";
 
         this.reset(gameData.levelData);
 
-        this.gameStepInterval = setInterval(this.gameStep, 100);
-        this.checkActiveInterval = setInterval(this.getActiveDirection.bind(this), 33);
-    }
-
-    getActiveDirection() {
-        let lastDirection;
-        const bindActions = ["left", "right", "up", "down"];
-        bindActions.forEach(actionName => {
-            if(this.inputController.isActionActive(actionName)) {
-                lastDirection = this.newDirection;
-                this.newDirection = actionName;
-                return;
-            }
-        });
-        return (this.newDirection || lastDirection);
+        this.gameStepInterval = setInterval(this.gameStep, gameData.levelData.speed);
     }
 
     gameStep(){
         
         // Обработать инпут
         if (this.isPaused) return;
-        
-        if( this.snake.move(this.getActiveDirection()) ){
-            // если врезался сам в себя - конец игры
-            this.finish();
-            this.renderer.clear();
-            return;
-
-        }
-        
-        if( this.gameField.checkSnakeStep( this.snake ) ){
+    
+        if( this.lastUserAction ) this.curerntDirection = this.lastUserAction;
+        this.lastUserAction = undefined;
+                
+        if( this.gameField.checkSnakeStep( this.snake ) || this.snake.move(this.curerntDirection) ){
             // если врезался - конец игры
-            this.finish();
-            this.renderer.clear();
+            this.renderer.render( true );
+
+            this.finish( 2000 );
+            setTimeout(() => {
+                this.eventBus.dispatchEvent(new CustomEvent('interface.finishScreen', {
+                    detail: {
+                        score: this.gameField.totalScore
+                    }
+                }));
+            }, 2000);
+
             return;
         }
 
@@ -158,9 +133,14 @@ class Game {
         // return this.isPaused;
     }
 
-    finish(){
+    finish( time ){
+        this.isPaused = false;
 
         clearInterval(this.gameStepInterval);
+
+        setTimeout( () => {
+            this.renderer.clear();
+        }, time || 1);
     }
 
     //
@@ -181,7 +161,14 @@ class Game {
         this.inputController.attach(target);
 
         //
-
+        
+        this.eventBus.addEventListener( InputController.ACTION_ACTIVATED, function(e){
+            if( ['left','right','up','down'].indexOf(e.detail.actionName) !== -1){
+                this.lastUserAction = e.detail.actionName;
+            }
+        }.bind(this));
 
     }
 }
+
+
